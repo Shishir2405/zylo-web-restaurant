@@ -1,0 +1,66 @@
+name: Build and Deploy zylo restaurant app to VPS
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy_to_prod:
+    if: github.ref == 'refs/heads/main'
+    name: Deploy to PROD VPS
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Build for PROD
+        run: |
+          docker build \
+            -t ghcr.io/${{ secrets.ACTOR }}/zylo-web-restaurant:prod .
+
+      - name: Push to GHCR
+        run: |
+          echo "${{ secrets.GH_TOKEN }}" | docker login ghcr.io -u ${{ secrets.ACTOR }} --password-stdin
+          docker push ghcr.io/${{ secrets.ACTOR }}/zylo-web-restaurant:prod
+
+      - name: Replace placeholders in docker-compose.prod.yml
+        run: |
+          HOST="${{ secrets.VPS_HOST }}"
+          USERNAME="${{ secrets.VPS_USERNAME }}"
+          # Remove newline characters from the SSH key
+          KEY=$(echo "${{ secrets.VPS_KEY }}" | tr -d '\n')
+          PORT="${{ secrets.VPS_PORT }}"
+
+          sed -i "s|\${HOST}|$HOST|g" docker-compose.prod.yml
+          sed -i "s|\${USERNAME}|$USERNAME|g" docker-compose.prod.yml
+          sed -i "s|\${KEY}|$KEY|g" docker-compose.prod.yml
+          sed -i "s|\${PORT}|$PORT|g" docker-compose.prod.yml
+        shell: bash
+
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@v0.1.8
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          passphrase: ${{ secrets.VPS_KEY_PASSPHRASE }}
+          script: |
+            cd zylo-web-restaurant
+            git pull
+            echo "${{ secrets.GH_TOKEN }}" | docker login ghcr.io -u ${{ secrets.ACTOR }} --password-stdin
+            docker compose -f docker-compose.prod.yml pull
+            docker compose -f docker-compose.prod.yml up -d

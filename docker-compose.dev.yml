@@ -1,0 +1,10 @@
+services:
+  zylo-web-restaurant:
+    image: metalhead224/zylo-web-restaurant
+    container_name: zylo-web-restaurant
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000

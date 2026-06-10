@@ -1,0 +1,24 @@
+services:
+  zylo-web-restaurant:
+    image: ghcr.io/metalhead224/zylo-web-restaurant:prod
+    container_name: zylo-web-restaurant
+    restart: always
+    environment:
+      - HOST=${HOST}
+      - USERNAME=${USERNAME}
+      - KEY=${KEY}
+      - PORT=${PORT}
+      - NODE_ENV=production
+      - VIRTUAL_PORT=3000
+      - VIRTUAL_HOST=partner.zyloservice.com
+      - LETSENCRYPT_HOST=partner.zyloservice.com
+      - LETSENCRYPT_EMAIL=suman.osti401@gmail.com
+    ports:
+      - 3000:3000
+    networks:
+      - proxy-network
+
+networks:
+  proxy-network:
+    name: proxy-network
+    external: true
