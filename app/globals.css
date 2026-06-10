@@ -1,0 +1,465 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   CSS VARIABLES — Zylo Brand Tokens (Light Theme)
+   shared with the admin app for visual parity.
+   ============================================================ */
+:root {
+  /* ── Brand Colors ───────────────────────── */
+  --gold: #d4840a;
+  --gold-dark: #b36a00;
+  --gold-light: #f5a623;
+  --gold-muted: rgba(212, 132, 10, 0.45);
+  --gold-glow: rgba(212, 132, 10, 0.12);
+  --gold-bg: rgba(212, 132, 10, 0.08);
+  --gold-border: rgba(212, 132, 10, 0.25);
+
+  /* ── Navy / Brand Accent ────────────────── */
+  --navy: #0d1b3e;
+  --navy-900: #070f23;
+  --navy-800: #0d1b3e;
+  --navy-700: #102048;
+  --navy-600: #132247;
+  --navy-500: #1a2e5a;
+  --navy-400: #1e3566;
+  --navy-300: #254080;
+
+  /* ── Page & Surface ─────────────────────── */
+  --bg-page: #f4f6fb;
+  --bg-subtle: #eef1f8;
+
+  --surface-1: #ffffff;
+  --surface-2: #f8f9fd;
+  --surface-3: #f0f3fa;
+
+  /* ── Text ───────────────────────────────── */
+  --text-primary: #0d1b3e;
+  --text-secondary: #3a4f7a;
+  --text-muted: #6b7da8;
+  --text-disabled: #a8b5cc;
+
+  /* ── Borders ────────────────────────────── */
+  --zylo-border: #dde3f0;
+  --border-hover: #b8c3de;
+  --border-focus: #d4840a;
+
+  /* ── Status ─────────────────────────────── */
+  --success: #15803d;
+  --success-bg: #f0fdf4;
+  --success-border: #86efac;
+  --error: #dc2626;
+  --error-bg: #fef2f2;
+  --error-border: #fca5a5;
+  --warning: #b45309;
+  --warning-bg: #fffbeb;
+  --warning-border: #fcd34d;
+  --info: #1d4ed8;
+  --info-bg: #eff6ff;
+  --info-border: #93c5fd;
+
+  /* ── Shadows ────────────────────────────── */
+  --shadow-sm: 0 1px 4px rgba(13, 27, 62, 0.07);
+  --shadow-md: 0 4px 16px rgba(13, 27, 62, 0.1);
+  --shadow-lg: 0 12px 40px rgba(13, 27, 62, 0.13);
+  --shadow-gold: 0 4px 18px rgba(212, 132, 10, 0.18);
+  --shadow-card:
+    0 2px 12px rgba(13, 27, 62, 0.08), 0 0 0 1px rgba(212, 132, 10, 0.06);
+
+  /* ── Radii ──────────────────────────────── */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-2xl: 28px;
+
+  /* ── Spacing ────────────────────────────── */
+  --spacing-page: clamp(16px, 4vw, 48px);
+
+  /* ── Transitions ────────────────────────── */
+  --transition: all 0.2s ease;
+  --transition-slow: all 0.4s ease;
+}
+
+body {
+  font-family: var(--font-dm-sans), system-ui, -apple-system, "Segoe UI",
+    Roboto, sans-serif;
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--gold-glow);
+  color: var(--gold-dark);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-subtle);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-hover);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold);
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .font-syne {
+    font-family: var(--font-syne), "Inter", system-ui, sans-serif;
+    letter-spacing: -0.02em;
+  }
+  .font-dm {
+    font-family: var(--font-dm-sans), system-ui, sans-serif;
+  }
+
+  .text-gold-gradient {
+    background: linear-gradient(135deg, var(--gold-light), var(--gold-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .glass {
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  .animate-fade-up {
+    animation: fadeUp 0.5s ease forwards;
+  }
+  .animate-fade-in {
+    animation: fadeIn 0.4s ease forwards;
+  }
+  .animate-slide-in-left {
+    animation: slideInLeft 0.4s ease forwards;
+  }
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite;
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes glow {
+  0%,
+  100% {
+    box-shadow: 0 0 6px rgba(212, 132, 10, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 18px rgba(212, 132, 10, 0.45);
+  }
+}
+
+/* ============================================================
+   COMPONENT CLASSES — admin-parity primitives
+   ============================================================ */
+
+.zy-card {
+  background: var(--surface-1);
+  border: 1px solid var(--zylo-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+}
+
+.zy-card-sm {
+  background: var(--surface-1);
+  border: 1px solid var(--zylo-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.zy-input {
+  display: block;
+  width: 100%;
+  background: var(--surface-2);
+  border: 1.5px solid var(--zylo-border);
+  border-radius: var(--radius-lg);
+  color: var(--text-primary);
+  font-size: 15px;
+  padding: 13px 16px;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.zy-input::placeholder {
+  color: var(--text-disabled);
+}
+.zy-input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px var(--gold-glow);
+  background: var(--surface-1);
+}
+
+.zy-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(
+    135deg,
+    var(--gold-light) 0%,
+    var(--gold-dark) 100%
+  );
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  box-shadow: var(--shadow-gold);
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+}
+.zy-btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 28px rgba(212, 132, 10, 0.28);
+}
+.zy-btn-primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.zy-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--surface-1);
+  color: var(--text-secondary);
+  border: 1.5px solid var(--zylo-border);
+  border-radius: var(--radius-lg);
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    background 0.2s ease;
+}
+.zy-btn-secondary:hover {
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+  background: var(--surface-3);
+}
+
+.zy-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 99px;
+  letter-spacing: 0.04em;
+}
+.zy-badge-gold {
+  background: var(--gold-bg);
+  color: var(--gold-dark);
+  border: 1px solid var(--gold-border);
+}
+.zy-badge-success {
+  background: var(--success-bg);
+  color: var(--success);
+  border: 1px solid var(--success-border);
+}
+.zy-badge-error {
+  background: var(--error-bg);
+  color: var(--error);
+  border: 1px solid var(--error-border);
+}
+.zy-badge-info {
+  background: var(--info-bg);
+  color: var(--info);
+  border: 1px solid var(--info-border);
+}
+
+.zy-stat-card {
+  background: var(--surface-1);
+  border: 1px solid var(--zylo-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.zy-stat-value {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--gold-dark);
+  letter-spacing: -0.03em;
+  font-family: var(--font-syne), system-ui;
+}
+.zy-stat-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.zy-section-title {
+  font-family: var(--font-syne), system-ui;
+  font-size: clamp(22px, 3vw, 30px);
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
+
+.zy-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  border: 1px solid transparent;
+  background: transparent;
+  text-decoration: none;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+.zy-nav-item:hover {
+  background: var(--surface-3);
+  color: var(--text-primary);
+}
+.zy-nav-item.active {
+  background: var(--gold-bg);
+  color: var(--gold-dark);
+  border-color: var(--gold-border);
+  font-weight: 600;
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply text-foreground;
+  }
+}
